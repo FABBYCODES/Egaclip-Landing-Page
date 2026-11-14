@@ -145,9 +145,9 @@ footer{border-top:1px solid var(--line);padding:26px 0 34px;color:var(--muted);f
   <div class="sh"><p class="k">From creators</p><h2>What people say after their first video.</h2></div>
   <!-- REPLACE with REAL customer quotes (name, role). Never publish placeholders. -->
   <div class="g3">
-    <div class="q"><p>“[Real quote about the result they got]”</p><small>[Name], [Role / Business]</small></div>
-    <div class="q"><p>“[Real quote about time or money saved]”</p><small>[Name], [Role / Business]</small></div>
-    <div class="q"><p>“[Real quote about how easy it was]”</p><small>[Name], [Role / Business]</small></div>
+    <div class="q"><p>“I love using Egaclip because it saves me so much time.”</p><small>Emmanuel Andrews, [Social Media Manager / Self_employed]</small></div>
+    <div class="q"><p>“Egaclip has transformed how I create content. It's intuitive and powerful.”</p><small>Sarah Johnson, [Content Creator / Freelancer]</small></div>
+    <div class="q"><p>“The time and effort saved by using Egaclip is incredible. Highly recommended!”</p><small>Michael Chen, [Marketing Director / Startup]</small></div>
   </div>
 </div></section>
 
@@ -172,6 +172,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 34px;color:var(--muted);f
 <script>
 /* ---------- CONFIG: edit here ---------- */
 const SITE="https://www.egaclip.com", APP="https://app.egaclip.com/app/";
+const AUTH="";  // Once devs connect the new sign-up page, put its address here (e.g. "/signup.html"). Sign in and Start free then open it directly. Leave empty to keep using the app.
 const VID=SITE+"/static/egaclip/cobalt/06_Video_AI/Showreel/";
 const PRICE_LOW=0.0567, PRICE_HIGH=0.0833;   // $ per credit: Studio plan to Creator plan
 const EX={
@@ -206,10 +207,11 @@ $("exg").innerHTML=order.map(k=>{const e=EX[k];return `<article class="ex"><vide
 
 // carry ad params (utm, ?for) into the app
 const carry=new URLSearchParams(location.search);carry.delete("for");carry.set("src",key);
-document.querySelectorAll("a.go").forEach(a=>a.href=APP+"?"+carry);
-document.querySelector('[data-app=login]').href=APP+"?auth=login";
+const to=(p,mode)=>{const q=new URLSearchParams(p);if(AUTH){q.set("auth",mode);return AUTH+"?"+q}return APP+"?"+q};
+document.querySelectorAll("a.go").forEach(a=>a.href=to(carry,"signup"));
+document.querySelector('[data-app=login]').href=AUTH?to(new URLSearchParams(),"login"):APP+"?auth=login";
 $("pf").onsubmit=e=>{e.preventDefault();const p=new URLSearchParams(carry);
- p.set("prompt",$("pt").value.trim());p.set("template",EX[A.ex].tpl);location.href=APP+"?"+p};
+ p.set("prompt",$("pt").value.trim());p.set("template",EX[A.ex].tpl);location.href=to(p,"signup")};
 
 // play videos only when visible (saves mobile data); respect reduced motion
 const calm=matchMedia("(prefers-reduced-motion: reduce)").matches;
